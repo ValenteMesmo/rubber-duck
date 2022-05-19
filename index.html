@@ -5,78 +5,19 @@
     <link rel="icon"
           type="image/png"
           href="src/rubber-duck.svg">
+
+    <script src="src/sound.js"></script>
 </head>
 <body>
-    <meter id="volumeMeter" high="0.25" max="1" value="0"></meter>
-    <button id="startButton">start</button>
-    <script>
-        function Sound(source, volume, loop) {
-            this.source = source;
-            this.volume = volume;
-            this.loop = loop;
-            var son;
-            this.son = son;
-            this.finish = false;
-            this.stop = function () {
-                document.body.removeChild(this.son);
-            }
-            this.start = function () {
-                if (this.finish) return false;
-                this.son = document.createElement("embed");
-                this.son.setAttribute("src", this.source);
-                this.son.setAttribute("hidden", "true");
-                this.son.setAttribute("volume", this.volume);
-                this.son.setAttribute("autostart", "true");
-                this.son.setAttribute("loop", this.loop);
-                document.body.appendChild(this.son);
-            }
-            this.remove = function () {
-                document.body.removeChild(this.son);
-                this.finish = true;
-            }
-            this.init = function (volume, loop) {
-                this.finish = false;
-                this.volume = volume;
-                this.loop = loop;
-            }
-        }
-        var quack = new Sound("src/quack.mp3", 100, false);
-        quack.start();
+    <div>
+        <img src="src/rubber-duck.svg" alt="Rubber duck">
+    </div>
 
-        const volumeMeterEl = document.getElementById('volumeMeter');
-        const startButtonEl = document.getElementById('startButton');
-        startButtonEl.onclick = async () => {
-            startButtonEl.disabled = true;
-            //TODO: check if exists microphone
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-            const audioContext = new AudioContext();
-            const mediaStreamAudioSourceNode = audioContext.createMediaStreamSource(stream);
-            const analyserNode = audioContext.createAnalyser();
-            let lastTime = new Date();
-            mediaStreamAudioSourceNode.connect(analyserNode);
+    <div>
+        <button id="startButton">start</button>
+        <meter id="volumeMeter" high="0.03" max="0.15" value="0"></meter>
+    </div>
 
-            const pcmData = new Float32Array(analyserNode.fftSize);
-            const onFrame = () => {
-                analyserNode.getFloatTimeDomainData(pcmData);
-                let sumSquares = 0.0;
-                for (const amplitude of pcmData) {
-                    sumSquares += amplitude * amplitude;
-                }
-                var currentVolume = Math.sqrt(sumSquares / pcmData.length);
-                volumeMeterEl.value = currentVolume;
-                if (currentVolume > 0.03) {
-                    lastTime = new Date();
-                }
-                else {
-                    if (new Date() - lastTime > 1000 * 6) {
-                        lastTime = new Date();
-                        quack.start();
-                    }
-                }
-                window.requestAnimationFrame(onFrame);
-            };
-            window.requestAnimationFrame(onFrame);
-        };
-    </script>
+    <script src="src/main.js"></script>
 </body>
 </html>
