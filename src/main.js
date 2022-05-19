@@ -2,6 +2,8 @@ var quack = new Audio('src/quack.mp3');;
 
 const volumeMeterEl = document.getElementById('volumeMeter');
 const startButtonEl = document.getElementById('startButton');
+const countDown = document.getElementById('countdown');
+const quackCooldown = 6900;
 
 startButtonEl.onclick = async () => {
     startButtonEl.disabled = true;
@@ -20,14 +22,25 @@ startButtonEl.onclick = async () => {
         for (const amplitude of pcmData) {
             sumSquares += amplitude * amplitude;
         }
-        var currentVolume = Math.sqrt(sumSquares / pcmData.length);
+        const currentVolume = Math.sqrt(sumSquares / pcmData.length);
+
+        const countdownValue = Math.floor
+            (
+                (quackCooldown - (new Date() - lastTime)) / 1000
+            ).toFixed(0);
+
+        if (countdownValue >= 0 && countdownValue <= 6)
+            countdown.innerText = countdownValue;
+
         volumeMeterEl.value = currentVolume;
+
         if (currentVolume > 0.03) {
             lastTime = new Date();
         }
         else {
-            if (new Date() - lastTime > 1000 * 6) {
+            if (new Date() - lastTime > quackCooldown) {
                 lastTime = new Date();
+
                 quack.play();
             }
         }
