@@ -1,4 +1,4 @@
-var quack = new Sound("src/quack.mp3", 100, false);
+var quack = new Audio('src/quack.mp3');;
 
 const volumeMeterEl = document.getElementById('volumeMeter');
 const startButtonEl = document.getElementById('startButton');
@@ -28,10 +28,12 @@ startButtonEl.onclick = async () => {
         else {
             if (new Date() - lastTime > 1000 * 6) {
                 lastTime = new Date();
-                quack.start();
+                quack.play();
             }
         }
-        window.requestAnimationFrame(onFrame);
+
+        setTimeout(() => onFrame(), 1000);
     };
-    window.requestAnimationFrame(onFrame);
+
+    onFrame();
 };
