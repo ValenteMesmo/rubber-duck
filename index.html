@@ -38,7 +38,7 @@
     const startButtonEl = document.getElementById('startButton');
     startButtonEl.onclick = async () => {
         startButtonEl.disabled = true;
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+        const stream = await window.navigator.mediaDevices.getUserMedia({ audio: true, video: false });
         const audioContext = new AudioContext();
         const mediaStreamAudioSourceNode = audioContext.createMediaStreamSource(stream);
         const analyserNode = audioContext.createAnalyser();
