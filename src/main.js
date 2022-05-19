@@ -32,7 +32,7 @@ startButtonEl.onclick = async () => {
             }
         }
 
-        setTimeout(() => onFrame(), 1000);
+        setTimeout(() => onFrame(), 18);
     };
 
     onFrame();
