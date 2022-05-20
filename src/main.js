@@ -34,7 +34,7 @@ startButtonEl.onclick = async () => {
 
         volumeMeterEl.value = currentVolume;
 
-        if (currentVolume > 0.03) {
+        if (currentVolume > 0.015) {
             lastTime = new Date();
         }
         else {
